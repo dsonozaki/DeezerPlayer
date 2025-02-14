@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="playback_exception">Error: track not loaded</string>
+    <string name="null_track_exception">Error: track not found</string>
+</resources>

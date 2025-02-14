@@ -1,0 +1,17 @@
+package com.sonozaki.deezerplayer
+
+import com.sonozaki.controller.PlayerController
+import com.sonozaki.controller.presentation.viewmodel.PlayerListenerVM
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+
+@HiltViewModel
+class MainVM @Inject constructor(playerController: PlayerController) :
+    PlayerListenerVM(playerController) {
+    /**
+     * Bind player to viewmodel lifecycle. You can call this method safely from activity.
+     */
+    fun startService() {
+        observePlayerEvents()
+    }
+}
