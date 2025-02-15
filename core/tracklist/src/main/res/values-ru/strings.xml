@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="find_tracks">Поиск трека</string>
+    <string name="error_icon">Ошибка</string>
+    <string name="retry">Перезагрузить</string>
+    <string name="music">Музыка</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="permission_denied">Permission to music denied. Try to provide it via settings.</string>
+    <string name="data_not_retrieved">Error: Data retrieving failed.</string>
+    <string name="custom_exception">Error: %1$s</string>
+    <string name="ok">Ok</string>
+    <string name="provide_permission">Please provide permission</string>
+    <string name="perm_rationale">You denied permission for music access previously. Please, provide it to an app or deny it forever.</string>
+    <string name="no">No</string>
+</resources>

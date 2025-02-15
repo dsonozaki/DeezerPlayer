@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="permission_denied">Нет доступа к трекам. Откройте настройки приложения.</string>
+    <string name="data_not_retrieved">Ошибка: не удалось получить данные</string>
+    <string name="custom_exception">Ошибка: %1$s</string>
+    <string name="ok">Ок</string>
+    <string name="provide_permission">Пожалуйста, предоставьте разрешение</string>
+    <string name="perm_rationale">Вы запретили приложению доступ к музыке. Пожалуйста, предоставьте его или запретите навсегда.</string>
+    <string name="no">Нет</string>
+</resources>
