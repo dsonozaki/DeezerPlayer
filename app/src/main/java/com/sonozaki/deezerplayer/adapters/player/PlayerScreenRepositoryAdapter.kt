@@ -1,4 +1,4 @@
-package com.sonozaki.deezerplayer.adapters
+package com.sonozaki.deezerplayer.adapters.player
 
 import com.sonozaki.core.presentation.UIError
 import com.sonozaki.data.player.entities.PlayerErrorData

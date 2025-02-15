@@ -56,7 +56,7 @@ class PlayerFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         _binding = ExoplayerLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root

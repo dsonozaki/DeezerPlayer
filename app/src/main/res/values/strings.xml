@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Deezer Player</string>
+    <string name="app_name" translatable="false">Deezer Player</string>
+    <string name="my_music">My music</string>
 </resources>
