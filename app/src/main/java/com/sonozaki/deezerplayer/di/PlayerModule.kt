@@ -17,8 +17,8 @@ import com.sonozaki.data.player.repositories.PlayerEventsRepositoryImpl
 import com.sonozaki.data.player.repositories.PlayerUIRepository
 import com.sonozaki.data.player.repositories.PlayerUIRepositoryImpl
 import com.sonozaki.deezerplayer.MainActivity
-import com.sonozaki.deezerplayer.adapters.PlayerControllerRepositoryAdapter
-import com.sonozaki.deezerplayer.adapters.PlayerScreenRepositoryAdapter
+import com.sonozaki.deezerplayer.adapters.player.PlayerControllerRepositoryAdapter
+import com.sonozaki.deezerplayer.adapters.player.PlayerScreenRepositoryAdapter
 import com.sonozaki.deezerplayer.mappers.Mapper
 import com.sonozaki.deezerplayer.mappers.player.MediaItemToPlayerDataMapper
 import com.sonozaki.deezerplayer.mappers.player.PlayerDataToUIErrorMapper

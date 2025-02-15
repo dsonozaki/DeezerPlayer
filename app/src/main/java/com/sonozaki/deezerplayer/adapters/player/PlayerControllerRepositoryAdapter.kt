@@ -1,4 +1,4 @@
-package com.sonozaki.deezerplayer.adapters
+package com.sonozaki.deezerplayer.adapters.player
 
 import androidx.media3.common.MediaItem
 import com.sonozaki.controller.domain.entities.PlayerError
