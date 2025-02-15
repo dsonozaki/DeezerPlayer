@@ -14,11 +14,12 @@ import coil3.load
 import coil3.request.error
 import coil3.request.placeholder
 import coil3.request.transformations
-import coil3.transform.RoundedCornersTransformation
+import coil3.transform.Transformation
 import com.google.android.material.snackbar.Snackbar
 import com.sonozaki.core.presentation.launchLifecycleAwareCoroutine
 import com.sonozaki.player.R
 import com.sonozaki.player.databinding.ExoplayerLayoutBinding
+import com.sonozaki.player.di.LocalPlayerModule.Companion.BIG_ICON_TRANSFORMATION
 import com.sonozaki.player.domain.entities.CurrentTrackState
 import com.sonozaki.player.presentation.viewmodels.PlayerVM
 import dagger.Lazy
@@ -42,6 +43,10 @@ class PlayerFragment : Fragment() {
     @Inject
     @Named("MainDispatcher")
     lateinit var mainDispatcher: CoroutineDispatcher
+
+    @Inject
+    @Named(BIG_ICON_TRANSFORMATION)
+    lateinit var imageTransformation: Transformation
 
 
     @Inject
@@ -105,7 +110,7 @@ class PlayerFragment : Fragment() {
         cover.load(imageUri) {
             placeholder(placeholderDrawable)
             error(R.drawable.baseline_music_note_24)
-            transformations(RoundedCornersTransformation(20f))
+            transformations(imageTransformation)
         }
     }
 
@@ -154,5 +159,10 @@ class PlayerFragment : Fragment() {
             cover.visibility = uiVisibility
             progressbar.visibility = progressVisibility
         }
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }
