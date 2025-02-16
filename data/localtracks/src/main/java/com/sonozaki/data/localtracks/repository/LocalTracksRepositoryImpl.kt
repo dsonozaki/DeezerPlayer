@@ -107,7 +107,15 @@ class LocalTracksRepositoryImpl @Inject constructor(
                         MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                         audioId
                     ).toString()
-                    add(TrackData(songUri, audioDuration, contentUri, audioTitle, audioArtist))
+                    add(
+                        TrackData(
+                            songUri,
+                            audioDuration,
+                            contentUri,
+                            audioTitle,
+                            audioArtist
+                        )
+                    )
                 }
             }
         } ?: throw DataRetrievalException()
