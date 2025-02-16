@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/deezer_player_graph"
+    app:startDestination="@id/deezerTracksFragment">
+
+    <fragment
+        android:id="@+id/deezerTracksFragment"
+        android:name="com.sonozaki.features.deezertracks.presentation.fragment.DeezerTracksFragment"
+        android:label="DeezerTracksFragment">
+        <action
+            android:id="@+id/action_deezerTracksFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.sonozaki.player.presentation.fragment.PlayerFragment"
+        android:label="PlayerFragment" />
+</navigation>

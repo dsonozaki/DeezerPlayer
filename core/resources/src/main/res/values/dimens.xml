@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <public name="dimens" type="dimen"/>
+    <dimen name="search_bar_elevation">2dp</dimen>
+    <dimen name="normal_margin">8dp</dimen>
+    <dimen name="big_margin">16dp</dimen>
+    <dimen name="large_margin">24dp</dimen>
+    <dimen name="big_icon">100dp</dimen>
+    <dimen name="large_icon">150dp</dimen>
+</resources>

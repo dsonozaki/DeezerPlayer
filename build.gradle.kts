@@ -4,4 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
+    alias(libs.plugins.hiltAndroid) apply false
+    alias(libs.plugins.kotlinKsp) apply false
+    alias(libs.plugins.dependency.analysis)
 }

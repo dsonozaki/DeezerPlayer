@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/cover"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/player_view"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.6" />
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="@dimen/big_icon"
+        android:layout_height="@dimen/big_icon"
+        app:layout_constraintBottom_toTopOf="@+id/player_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        android:gravity="bottom|center_horizontal"
+        android:layout_marginBottom="220dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:ellipsize="marquee"
+            android:layout_marginHorizontal="@dimen/normal_margin"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:freezesText="true"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textColor="?attr/colorOnSurface" />
+
+        <TextView
+            android:id="@+id/artist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginHorizontal="@dimen/normal_margin"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:freezesText="true"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textAppearance="?attr/textAppearanceLabelLarge"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+    </LinearLayout>
+
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/player_view"
+        app:shutter_background_color="?attr/colorPrimaryContainer"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:use_artwork="false"
+        app:hide_on_touch="false"
+        app:controller_layout_id="@layout/custom_player_controls"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:use_controller="true"
+        app:show_timeout="-1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
