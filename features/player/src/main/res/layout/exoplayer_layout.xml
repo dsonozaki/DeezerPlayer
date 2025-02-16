@@ -41,11 +41,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large_margin"
             android:ellipsize="marquee"
+            android:layout_marginHorizontal="@dimen/normal_margin"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
+            android:freezesText="true"
             android:textAppearance="?attr/textAppearanceHeadlineSmall"
             android:textColor="?attr/colorOnSurface" />
 
@@ -54,8 +56,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginHorizontal="@dimen/normal_margin"
             android:ellipsize="marquee"
-            android:maxLines="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:freezesText="true"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
             android:textAppearance="?attr/textAppearanceLabelLarge"
             android:textColor="?attr/colorOnSurfaceVariant" />
     </LinearLayout>

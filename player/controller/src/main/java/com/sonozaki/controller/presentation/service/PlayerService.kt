@@ -32,7 +32,9 @@ class PlayerService : MediaSessionService() {
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? =
         mediaSession
 
+
     override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
         val player = mediaSession?.player
         if (!player?.playWhenReady!!) {
             player.pause()
@@ -42,8 +44,8 @@ class PlayerService : MediaSessionService() {
 
     override fun onDestroy() {
         mediaSession?.run {
-            player.release()
             release()
+            player.release()
             mediaSession = null
         }
         super.onDestroy()

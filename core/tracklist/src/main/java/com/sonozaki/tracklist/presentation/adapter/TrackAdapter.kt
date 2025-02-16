@@ -9,7 +9,6 @@ import coil3.request.error
 import coil3.request.placeholder
 import coil3.request.transformations
 import coil3.transform.Transformation
-import com.sonozaki.tracklist.R
 import com.sonozaki.tracklist.databinding.TrackItemBinding
 import com.sonozaki.tracklist.domain.entities.Track
 import com.sonozaki.tracklist.presentation.utils.formatMilliseconds
@@ -39,7 +38,7 @@ class TrackAdapter @AssistedInject constructor(
         with(holder.binding) {
             cover.load(track.coverUri) {
                 placeholder(placeholderDrawable)
-                error(R.drawable.baseline_music_note_24)
+                error(com.sonozaki.resources.R.drawable.baseline_music_note_24)
                 transformations(transformation)
             }
             duration.text = formatMilliseconds(track.duration)
