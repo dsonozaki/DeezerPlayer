@@ -4,4 +4,8 @@
         android:id="@+id/local_player_graph"
         android:title="@string/my_music"
         android:icon="@drawable/baseline_music_note_24" />
+    <item
+        android:id="@+id/deezer_player_graph"
+        android:title="@string/deezer_music"
+        android:icon="@drawable/deezer_icon_logo_vector" />
 </menu>

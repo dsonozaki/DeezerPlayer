@@ -7,15 +7,26 @@ import com.sonozaki.data.localtracks.entitities.TracksStateData
 import com.sonozaki.data.localtracks.repository.LocalTracksRepository
 import com.sonozaki.data.localtracks.repository.LocalTracksRepositoryImpl
 import com.sonozaki.data.player.entities.TrackInfo
+import com.sonozaki.deezerplayer.adapters.tracklist.DeezerTracksRepositoryAdapter
 import com.sonozaki.deezerplayer.adapters.tracklist.LocalTracksRepositoryAdapter
 import com.sonozaki.deezerplayer.mappers.Mapper
+import com.sonozaki.deezerplayer.mappers.tracklist.NetworkErrorToUIErrorMapper
+import com.sonozaki.deezerplayer.mappers.tracklist.NetworkTrackStateDataToTrackMapper
 import com.sonozaki.deezerplayer.mappers.tracklist.TrackDataToTrackMapper
+import com.sonozaki.deezerplayer.mappers.tracklist.TrackDtoToTrackMapper
 import com.sonozaki.deezerplayer.mappers.tracklist.TrackErrorToUIErrorMapper
 import com.sonozaki.deezerplayer.mappers.tracklist.TrackStateDataToTrackStateMapper
 import com.sonozaki.deezerplayer.mappers.tracklist.TrackToTrackInfoMapper
 import com.sonozaki.deezerplayer.navigator.Navigator
+import com.sonozaki.deezertracks.entitities.NetworkTrackStateData
+import com.sonozaki.deezertracks.network.dto.TrackDto
+import com.sonozaki.deezertracks.repository.DeezerTracksRepository
+import com.sonozaki.deezertracks.repository.DeezerTracksRepositoryImpl
+import com.sonozaki.features.deezertracks.DeezerRouter
+import com.sonozaki.features.deezertracks.presentation.viewmodel.DeezerTracksViewModel.Companion.DEEZER_INJECTION_NAME
 import com.sonozaki.features.localtracks.presentation.LocalTrackRouter
 import com.sonozaki.features.localtracks.presentation.viewmodel.LocalTracksViewModel.Companion.INJECTION_NAME
+import com.sonozaki.network.NetworkError
 import com.sonozaki.tracklist.domain.entities.Track
 import com.sonozaki.tracklist.domain.entities.TrackState
 import com.sonozaki.tracklist.domain.usecases.GetTrackUseCaseImpl
@@ -43,6 +54,10 @@ abstract class TracksModule {
 
     @Binds
     @Singleton
+    abstract fun bindDeezerTrackFragmentNavigator(navigator: Navigator): DeezerRouter
+
+    @Binds
+    @Singleton
     abstract fun bindTrackDataToTrackMapper(trackDataToTrackMapper: TrackDataToTrackMapper): Mapper<TrackData, Track>
 
     @Binds
@@ -60,6 +75,22 @@ abstract class TracksModule {
     @Binds
     @Singleton
     abstract fun bindLocalTracksRepository(localTracksRepository: LocalTracksRepositoryImpl): LocalTracksRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindDeezerTracksRepository(deezerTracksRepository: DeezerTracksRepositoryImpl): DeezerTracksRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindNetworkErrorToUIErrorMapper(mapper: NetworkErrorToUIErrorMapper): Mapper<NetworkError, UIError>
+
+    @Binds
+    @Singleton
+    abstract fun bindTrackDtoToTrackMapper(mapper: TrackDtoToTrackMapper): Mapper<TrackDto, Track>
+
+    @Binds
+    @Singleton
+    abstract fun bindNetworkTrackStateDataToTrackMapper(mapper: NetworkTrackStateDataToTrackMapper): Mapper<NetworkTrackStateData, TrackState>
 
     companion object {
         @Provides
@@ -80,10 +111,32 @@ abstract class TracksModule {
         fun provideSetTrackListUseCase(localTracksRepositoryAdapter: LocalTracksRepositoryAdapter): SetTrackListAndTrackUseCase =
             SetTrackListAndTrackUseCaseImpl(localTracksRepositoryAdapter)
 
+
+        @Provides
+        @Singleton
+        @Named(DEEZER_INJECTION_NAME)
+        fun provideRefreshDataUseCaseDeezer(deezerTracksRepositoryAdapter: DeezerTracksRepositoryAdapter): RefreshUseCase =
+            RefreshUseCaseImpl(deezerTracksRepositoryAdapter)
+
+        @Provides
+        @Singleton
+        @Named(DEEZER_INJECTION_NAME)
+        fun provideGetTracksUseCaseDeezer(deezerTracksRepositoryAdapter: DeezerTracksRepositoryAdapter): GetTracksUseCase =
+            GetTrackUseCaseImpl(deezerTracksRepositoryAdapter)
+
+        @Provides
+        @Singleton
+        @Named(DEEZER_INJECTION_NAME)
+        fun provideSetTracksUseCaseDeezer(deezerTracksRepositoryAdapter: DeezerTracksRepositoryAdapter): SetTrackListAndTrackUseCase =
+            SetTrackListAndTrackUseCaseImpl(deezerTracksRepositoryAdapter)
+
         @Provides
         @Singleton
         fun provideTrackStateChannel(): Channel<TracksStateData> = Channel()
 
+        @Provides
+        @Singleton
+        fun provideNetworkTrackState(): Channel<NetworkTrackStateData> = Channel()
 
     }
 }

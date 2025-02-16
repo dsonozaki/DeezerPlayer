@@ -35,6 +35,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:tracklist"))
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
     implementation(libs.androidx.core.ktx)

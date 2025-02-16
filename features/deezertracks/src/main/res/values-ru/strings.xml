@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="server_error">Ошибка сервера</string>
+    <string name="connection_error">Ошибка соединения. Проверьте Интернет.</string>
+    <string name="unknown_error">Ошибка: %1$s</string>
+    <string name="empty_response">Ошибка: пустой ответ</string>
+</resources>
