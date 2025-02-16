@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         )
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.playerFragment2 -> setBotNavHidden(true) //hide navigation bar when player opened
+                R.id.playerFragment2, R.id.playerFragment -> setBotNavHidden(true) //hide navigation bar when player opened
                 else -> setBotNavHidden(false)
             }
         }

@@ -5,28 +5,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.OptIn
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.session.MediaController
+import androidx.media3.session.SessionToken
 import coil3.load
 import coil3.request.error
 import coil3.request.placeholder
 import coil3.request.transformations
 import coil3.transform.Transformation
 import com.google.android.material.snackbar.Snackbar
+import com.google.common.util.concurrent.ListenableFuture
+import com.google.common.util.concurrent.MoreExecutors
 import com.sonozaki.core.presentation.launchLifecycleAwareCoroutine
-import com.sonozaki.player.R
 import com.sonozaki.player.databinding.ExoplayerLayoutBinding
 import com.sonozaki.player.di.LocalPlayerModule.Companion.BIG_ICON_TRANSFORMATION
 import com.sonozaki.player.domain.entities.CurrentTrackState
 import com.sonozaki.player.presentation.viewmodels.PlayerVM
-import dagger.Lazy
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -34,7 +34,7 @@ import javax.inject.Named
 class PlayerFragment : Fragment() {
 
     @Inject
-    lateinit var playerProvider: Lazy<Player> //thread-safe lazy source of media controller
+    lateinit var sessionToken: SessionToken
 
     @Inject
     @Named("DefaultDispatcher")
@@ -47,6 +47,8 @@ class PlayerFragment : Fragment() {
     @Inject
     @Named(BIG_ICON_TRANSFORMATION)
     lateinit var imageTransformation: Transformation
+
+    private var mediaControllerFuture: ListenableFuture<MediaController>? = null
 
 
     @Inject
@@ -70,7 +72,6 @@ class PlayerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupPlayer()
         observeErrors()
         observeTrackState()
     }
@@ -78,12 +79,15 @@ class PlayerFragment : Fragment() {
     /**
      * Receive player in background and set up playerView
      */
+    @OptIn(UnstableApi::class)
     private fun setupPlayer() {
-        viewLifecycleOwner.lifecycleScope.launch(defaultDispatcher) {
-            val player = playerProvider.get()
-            withContext(mainDispatcher) {
-                binding.playerView.player = player
-            }
+        mediaControllerFuture = MediaController.Builder(requireContext(), sessionToken).buildAsync()
+        mediaControllerFuture?.apply {
+            addListener ({
+                val controller = get()
+                binding.playerView.player = controller
+                binding.playerView.showController()
+            }, MoreExecutors.directExecutor())
         }
     }
 
@@ -109,7 +113,7 @@ class PlayerFragment : Fragment() {
     private fun ExoplayerLayoutBinding.loadCover(imageUri: String) {
         cover.load(imageUri) {
             placeholder(placeholderDrawable)
-            error(R.drawable.baseline_music_note_24)
+            error(com.sonozaki.resources.R.drawable.baseline_music_note_24)
             transformations(imageTransformation)
         }
     }
@@ -134,7 +138,9 @@ class PlayerFragment : Fragment() {
             is CurrentTrackState.Data -> {
                 setupLoadingState(false)
                 artist.text = trackState.artist
+                binding.artist.isSelected = true
                 title.text = trackState.title
+                binding.title.isSelected = true
                 loadCover(trackState.imageUri)
             }
         }
@@ -159,6 +165,18 @@ class PlayerFragment : Fragment() {
             cover.visibility = uiVisibility
             progressbar.visibility = progressVisibility
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setupPlayer()
+    }
+
+    override fun onStop() {
+        mediaControllerFuture?.let {
+            MediaController.releaseFuture(it)
+        }
+        super.onStop()
     }
 
     override fun onDestroyView() {

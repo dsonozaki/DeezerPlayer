@@ -9,7 +9,8 @@ import javax.inject.Inject
 class MainVM @Inject constructor(playerController: PlayerController) :
     PlayerListenerVM(playerController) {
     /**
-     * Bind player to viewmodel lifecycle. You can call this method safely from activity.
+     * Bind player to viewmodel lifecycle. Without that MediaSessionService may go to background and be destroyed after 1 minute if user pauses music and move app to background.
+     * You can call this method safely from activity.
      */
     fun startService() {
         observePlayerEvents()
