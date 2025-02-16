@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlinKsp)
     alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.dependency.analysis)
 }
 
 android {
@@ -42,7 +43,6 @@ dependencies {
     implementation(libs.javax.inject)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.material)
     implementation(project(":core:presentation"))
     implementation(project(":core:resources"))

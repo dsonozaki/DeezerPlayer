@@ -7,5 +7,5 @@
     <item
         android:id="@+id/deezer_player_graph"
         android:title="@string/deezer_music"
-        android:icon="@drawable/deezer_icon_logo_vector" />
+        android:icon="@drawable/heart_svgrepo_com" />
 </menu>

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlinKsp)
     alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.dependency.analysis)
 }
 
 android {
@@ -35,7 +36,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:tracklist"))
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
     implementation(libs.androidx.core.ktx)
