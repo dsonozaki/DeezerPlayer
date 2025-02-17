@@ -11,6 +11,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.CoroutineDispatcher
+import javax.inject.Named
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -21,7 +23,8 @@ class MainVMModule {
     fun providePlayerController(@ApplicationContext context: Context,
                                 sessionToken: SessionToken,
                                 getEventFlowUseCase: GetEventFlowUseCase,
-                                playerListener: PlayerListener): PlayerController = PlayerController(
-                                    context, sessionToken, getEventFlowUseCase, playerListener
+                                playerListener: PlayerListener,
+                                @Named("IODispatcher") ioDispatcher: CoroutineDispatcher): PlayerController = PlayerController(
+                                    context, sessionToken, getEventFlowUseCase, playerListener, ioDispatcher
                                 )
 }
