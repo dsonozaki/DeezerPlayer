@@ -9,6 +9,7 @@ import androidx.annotation.OptIn
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
@@ -87,6 +88,7 @@ class PlayerFragment : Fragment() {
                 val controller = get()
                 binding.playerView.player = controller
                 binding.playerView.showController()
+                Log.w("player","final")
             }, MoreExecutors.directExecutor())
         }
     }

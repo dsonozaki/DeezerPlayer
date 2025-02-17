@@ -43,7 +43,7 @@ class PlayerController (
         playList: List<MediaItem>,
         track: Int
     ) {
-        controller?.removeListener(playerListener)
+        releaseResources()
         mediaControllerFuture = MediaController.Builder(context, sessionToken).buildAsync()
         mediaControllerFuture?.apply {
             addListener({
@@ -72,15 +72,21 @@ class PlayerController (
         }
 
     /**
-     * Release resources. Must be called in the end of player lifecycle.
+     * Release player resources
      */
-    fun clear() {
-        controller?.release()
+    private fun releaseResources() {
+        controller?.removeListener(playerListener)
         mediaControllerFuture?.let {
             MediaController.releaseFuture(it)
         }
+    }
+
+    /**
+     * Release resources. Must be called in the end of player lifecycle.
+     */
+    fun clear() {
+        releaseResources()
         mediaControllerFuture = null
         playerListener.clear()
-        controller?.removeListener(playerListener)
-    }
+   }
 }
