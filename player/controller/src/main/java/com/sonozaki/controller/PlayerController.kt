@@ -1,14 +1,16 @@
 package com.sonozaki.controller
 
 import android.content.Context
-import androidx.core.content.ContextCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
-import com.google.common.util.concurrent.ListenableFuture
 import com.sonozaki.controller.domain.entities.PlayerEvent
 import com.sonozaki.controller.domain.usecases.GetEventFlowUseCase
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 
 /**
  * Class for sending data to player. It can be used to bind player lifecycle to lifecycle of some component.
@@ -17,13 +19,27 @@ class PlayerController (
     private val context: Context,
     private val sessionToken: SessionToken,
     private val getEventFlowUseCase: GetEventFlowUseCase,
-    private val playerListener: PlayerListener
+    private val playerListener: PlayerListener,
+    private val ioDispatcher: CoroutineDispatcher
 ) {
 
-   private var controller: Player? = null
+    private var controller: Player? = null
 
-    private var mediaControllerFuture: ListenableFuture<MediaController>? = null
+    private val mutex: Mutex = Mutex()
 
+    /**
+     * Get or init player
+     */
+    private suspend fun getPlayer(): Player = withContext(ioDispatcher) {
+        mutex.withLock {
+            if (controller == null) {
+                controller = MediaController.Builder(context, sessionToken).buildAsync().get()?.apply {
+                    addListener(playerListener)
+                }
+            }
+            controller!!
+        }
+    }
 
     suspend fun collectEvents() {
         getEventFlowUseCase().collect {
@@ -39,36 +55,31 @@ class PlayerController (
     /**
      * Select playlist and start track with given id.
      */
-    private fun selectPlaylistAndTrack(
+    private suspend fun selectPlaylistAndTrack(
         playList: List<MediaItem>,
         track: Int
     ) {
-        releaseResources()
-        mediaControllerFuture = MediaController.Builder(context, sessionToken).buildAsync()
-        mediaControllerFuture?.apply {
-            addListener({
-                controller = get()
-                controller?.addListener(playerListener)
-                val position = getPosition(playList, track)
-                controller?.setMediaItems(playList)
-                controller?.seekTo(track, position)
-                controller?.prepare()
-                controller?.play()
-            }, ContextCompat.getMainExecutor(context))
+        val player = getPlayer()
+        val position = getPosition(player, playList, track)
+        player.setMediaItems(playList)
+        player.seekTo(track, position)
+        player.prepare()
+        player.play()
         }
-    }
+
 
     /**
      * Start song from the same position if user selects song that's playing now
      */
     private fun getPosition(
+        player: Player,
         playList: List<MediaItem>,
         track: Int
     ) =
-        if (playList[track].localConfiguration?.uri != controller?.currentMediaItem?.localConfiguration?.uri) {
+        if (playList[track].localConfiguration?.uri != player.currentMediaItem?.localConfiguration?.uri) {
             0
         } else {
-            controller?.currentPosition ?: 0
+            player.currentPosition
         }
 
     /**
@@ -76,9 +87,8 @@ class PlayerController (
      */
     private fun releaseResources() {
         controller?.removeListener(playerListener)
-        mediaControllerFuture?.let {
-            MediaController.releaseFuture(it)
-        }
+        controller?.release()
+        controller = null
     }
 
     /**
@@ -86,7 +96,6 @@ class PlayerController (
      */
     fun clear() {
         releaseResources()
-        mediaControllerFuture = null
         playerListener.clear()
    }
 }
