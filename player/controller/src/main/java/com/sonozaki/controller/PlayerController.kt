@@ -43,8 +43,9 @@ class PlayerController (
         playList: List<MediaItem>,
         track: Int
     ) {
-        val mediaControllerFuture = MediaController.Builder(context, sessionToken).buildAsync()
-        mediaControllerFuture.apply {
+        controller?.removeListener(playerListener)
+        mediaControllerFuture = MediaController.Builder(context, sessionToken).buildAsync()
+        mediaControllerFuture?.apply {
             addListener({
                 controller = get()
                 controller?.addListener(playerListener)
